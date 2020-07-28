@@ -18,6 +18,9 @@ const teamFinances = document.getElementById("showTeamFinances")
 const teamDiv = document.createElement("div")
 teamDiv.class = "container"
 
+const cardDeck = document.createElement("div")
+cardDeck.className = "card-deck"
+
 function PopulateTeamDropDownList() {
    
    let selectList = document.getElementById("selectList");
@@ -163,27 +166,27 @@ function register() {
           <form method="post" id="registerForm">
                 <div class="form-group">
                   <label for="name">Name: </label>
-                  <input type="text" name="name"><br>
+                  <input type="text" name="name">
                 </div>
 
                 <div class="form-group">
                   <label for="email">Email </label>
-                  <input type="email" class="form-control"name="email"><br> 
+                  <input type="email" class="form-control"name="email"> 
                   <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 <div>
                 
                 <label for="user_picture">Your Picture </label>
-                <input type="text" name="user_picture"><br>
+                <input type="text" name="user_picture">
 
                 <label for="selectList">Team</label>
                 <select id="selectList">
-                </select><br>
+                </select>
 
                 <label for="password">Password </label>
-                <input type="password" name="password"><br>
+                <input type="password" name="password">
 
                 <label for="password_confirmation">Password Confirmation</label>
-                <input type="password" name="password_confirmation"><br>
+                <input type="password" name="password_confirmation">
                 
                 <input type="submit" value="Submit">
           </form>
@@ -215,12 +218,12 @@ function login(){
           <form method="post" id="loginForm">
             <div class="form-group">
               <label for="email">Email</label>
-              <input id="password" type="email" class="form-control" name="email"><br> 
+              <input id="password" type="email" class="form-control" name="email"> 
             </div>
           
             <div class="form-group">
               <label for="password">Password </label>
-              <input id="password" type="password" class="form-control" name="password" required data-eye><br>
+              <input id="password" type="password" class="form-control" name="password" required data-eye>
             </div>
 
             <div class="form-group m-0">
@@ -228,7 +231,7 @@ function login(){
             <div>
           
             <div class="mt-4 text-center">
-            <br>Don't Have an Account?<button type="button" class="btn">Register</button>
+            Don't Have an Account?<button type="button" class="btn">Register</button>
             <div>
           </form>
         </div>
@@ -283,6 +286,7 @@ function login(){
     workoutList.innerHTML = ""
     teamFinances.innerHTML = ""
     teamDiv.innerHTML = ""
+    cardDeck.innerHTML = ""
 
     let players = team["players"]
     var playerSalary = players.map(player => player.salary).reduce((acc, salary) => salary + acc)
@@ -337,7 +341,7 @@ function login(){
                                     </div>
 
                                     <div class="xp-social-profile-desc">
-                                    <p class="text-muted">Primary Kit Color:${team.primary_color}<br>Secondary Kit Color: ${team.secondary_color}</p>
+                                    <p class="text-muted">Primary Kit Color:${team.primary_color} Secondary Kit Color: ${team.secondary_color}</p>
                                    </div>
 
                                 </div>
@@ -366,8 +370,8 @@ function login(){
                                 </div>
                                 <div class="col">
                                     <div class="xp-social-profile-following pt-3">
-                                        <h5 class="text-black my-1">${team.goals}</h5>
-                                        <p class="mb-0 text-muted">Goals</p>
+                                        <h5 class="text-black my-1">${team.wins * 3 + team.draws * 1}</h5>
+                                        <p class="mb-0 text-muted">Points</p>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -382,6 +386,7 @@ function login(){
                                 <button class="btn btn-light" id="signPlayerBtn">Sign New Player</button>
                                 <button class="btn btn-light" id="checkTeamSchedBtn">Check Team Schedule </button>
                                 <button class="btn btn-light" id="teamFinancesBtn">Check Team Finances</button>
+                                <button class="btn btn-light" id="premStandings">Premier League Standings</button>
                               <div/>
                             </div>
                         </div>
@@ -395,6 +400,7 @@ function login(){
     const signPlayerBtn = document.querySelector("button#signPlayerBtn")
     const teamSchedBtn = document.querySelector("button#checkTeamSchedBtn") 
     const teamFinancesBtn = document.querySelector("button#teamFinancesBtn")
+    const premLeague = document.querySelector("button#premStandings")
     
     signPlayerBtn.addEventListener("click", () => {
       signPlayer()
@@ -405,11 +411,12 @@ function login(){
     teamFinancesBtn.addEventListener("click", () => {
       seeTeamFinances(team)
     })
+    premLeague.addEventListener("click", () => {
+      fetchAllTeams()
+    })
 
 
-    const cardDeck = document.createElement("div")
-    cardDeck.className = "card-deck"
-
+  
     document.body.appendChild(cardDeck)
 
     let char = team["players"];
@@ -434,7 +441,7 @@ function login(){
       let playerPicture = document.createElement("img")
       playerPicture.src = player.player_picture
       profilePicture.append(playerPicture)
-      debugger
+
       let cardContent = document.createElement("div")
       cardContent.className = "card-content-player"
       cardGroup.append(cardContent)
@@ -478,7 +485,7 @@ function login(){
         return fetch("http://localhost:3000/api/v1/players/"+player.id, {
           method: "DELETE"
         })
-      .then(() => card.remove())
+      .then(() => cardGroup.remove())
       })
     })  
   }
@@ -486,57 +493,84 @@ function login(){
   function signPlayer() {
     playerDetail.innerHTML = ""
     teamDiv.innerHTML = ""
+    cardDeck.innerHTML = ""
     divForm.innerHTML = 
-    `<form method="post" id="newPlayer">
-          <label for="name">Name </label>
-          <input type="text" name="name" required><br>
+    `
+    <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card card-signin flex-row my-5">
+          <div class="card-img-left d-none d-md-flex">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center">Sign Player</h5>
+            <form method="post" class="form-signin" id="newPlayer">
+              <div class="form-label-group">
+                <input type="text" name="playerName" class="form-control" required autofocus>
+                <label for="playerName">Player Name</label>
+              </div>
 
-          <label for="player_picture">Player Picture:</label>
-          <input type="text" name="player_picture><br> 
+              <div class="form-label-group">
+                <input type="text" id="player_picture" class="form-control" placeholder="Enter Image URL" required>
+                <label for="player_picture" >Player Picture</label>
+              </div>
 
-          <label for="player_position">Position:</label><br><br>
-          <input type="text" name="position" required><br>
+              <div class="form-label-group">
+                <input type="text" id="position" class="form-control" required>
+                <label for="position">Player Position</label>
+              </div>
+              
+              <div class="form-label-group"> 
+                <select id="selectList" class="form-control">
+                </select>
+              </div>
 
-          <label for="selectList">Team</label>
-          <select id="selectList">
-          </select><br>
+              <div class="form-label-group">
+                <select id="selectCoach" class="form-control">
+                </select>
+              </div>
 
-          <label for="selectList">Select a Coach to Assign to Player</label>
-          <select id="selectCoach">
-          </select><br>
+              <div class="form-label-group">
+                <label for="playerNumber">Player Number</label>
+                <input type="integer" id="playerNumber" class="form-control" required autofocus>
+              </div>
 
-          <label for="number">Player Number:</label>
-          <input type="integer" name="number" required><br>
-          
-          <label for="Salary">Player Salary:</label>
-          <input type="float" name="salary"><br> 
+              <div class="form-label-group">
+                <label for="playerSalary">Player Salary</label>
+                <input type="float" id="playerSalary" class="form-control" required autofocus>
+              </div>
 
-          <label for="playing_time">Playing Time</label>
-          <input type="integer" name="playing_time" required><br>
+              <div class="form-label-group">
+                <label for="playingTime">Playing Time</label>
+                <input type="integer" id="playingTime" class="form-control" required autofocus>
+              </div>
 
-          <label for="nationality">Nationality</label>
-          <input type="text" name="nationality" required><br> 
+              <div class="form-label-group">
+                <label for="nationality">Nationality</label>
+                <input type="text" id="nationality" class="form-control" required autofocus>
+              </div>
 
-          <label for="Age">Age</label>
-          <input type="integer" name="age" required><br>
+              <div class="form-label-group">
+                <label for="country_picture">Flag Picture</label>
+                <input type="text" id="country_picture" class="form-control" required autofocus>
+              </div>
 
-          <label for="Appearances">Appearances:</label>
-          <input type="integer" name="appearances"><br>
+              <div class="form-label-group">
+                <label for="age">Age</label>
+                <input type="integer" id="age" class="form-control" required autofocus>
+              </div>
 
-          <label for="goals">Goals:</label>
-          <input type="integer" name="goals"><br>
+              <hr class="my-4">
 
-          <label for="player_picture">Assists:</label>
-          <input type="integer" name="assists"><br>
-
-          <label for="passes">Successful Passes</label>
-          <input type="integer" name="passes"><br>
-
-          <label for="tackles">Tackles:</label>
-          <input type="integer" name="tackles"><br>
-
-          <input type="submit" value="Submit">
-    </form>`
+              <input type="submit" value="Submit">
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    `
     PopulateCoachDropDownList()
     PopulateTeamDropDownList()
     let form = document.getElementById("newPlayer")
@@ -547,9 +581,9 @@ function login(){
   }
 
   function createNewPlayer(event) {
-    debugger
       fetch("http://localhost:3000/api/v1/players", {
           method: "POST", 
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -564,12 +598,8 @@ function login(){
             salary: event.target[6].value,
             playing_time: event.target[7].value,
             nationality: event.target[8].value,
-            age: event.target[9].value,
-            appearances: event.target[10].value,
-            goals: event.target[11].value,
-            assists: event.target[12].value,
-            passes: event.target[13].value,
-            tackles: event.target[14].value,
+            country_picture: event.target[9].value,
+            age: event.target[10].value,
           })
       })
       .then(resp => resp.json())
@@ -577,9 +607,10 @@ function login(){
   }
 
   function showPlayerDetails(player) {
-    debugger
     divForm.innerHTML = ""
-    teamDiv.innerHTML = ""
+    cardDeck.innerHTML = ""
+    
+    cardDeck.append(playerDetail)
 
     const img = document.createElement("img")
     img.src = player.player_picture
@@ -598,6 +629,8 @@ function login(){
 
     const playerInformation = document.createElement("div")
     playerInformation.id = "playerInformation"
+    cardDeck.append(playerInformation)
+
     playerInformation.innerHTML = 
     `
      <h3>${player.name}</h3>
@@ -710,18 +743,20 @@ function login(){
     debugger
     playerDetail.innerHTML = ""
     workoutList.innerHTML = ""
+    cardDeck.innerHTML = ""
+    teamDiv.innerHTML = ""
     divForm.innerHTML = 
     `<form method="post" id="newWorkout">
           <label for="name">Name </label>
           <input type="text" name="name" required><br>
 
           <label for="exercises">Exercise </label>
-          <select name="exercises" id="exercises">
-          </select><br>
+          <select name="exercises" id="exercises"><br> 
+          </select>
 
           <label for "players">Player</label>
-          <select name="players" id="players"> 
-          </select><br>
+          <select name="players" id="players"><br>
+          </select>
 
           <label for="start_time">Start Time </label>
           <input type="time" name="start_time" required><br>
@@ -767,8 +802,10 @@ function login(){
   }
 
   function seeTeamFinances(team){ 
-    teamDiv.innerHTML = ""
     playerDetail.innerHTML = ""
+    cardDeck.innerHTML = ""
+
+    cardDeck.append(teamFinances)
 
     let players = team["players"]
     var playerSalary = players.map(player => player.salary).reduce((acc, salary) => salary + acc)
@@ -780,7 +817,7 @@ function login(){
     <h3> Number of Players on Contract: ${team.players.length}</h3> 
     <h3>Total Value of Player Contracts: £${playerSalary} </h3>
 
-    <h3> Number of Coaches on Contract: ${team.users.length}</h3><br>
+    <h3> Number of Coaches on Contract: ${team.users.length}</h3>
 
     <button id="backtoHome">Back to Team Details</button>
     `
@@ -812,9 +849,9 @@ function login(){
 }
 
   function showWorkout(workout) {
-    teamDetails.innerHTML = ""
     playerDetail.innerHTML = ""
     workoutList.innerHTML = ""
+    teamDiv.innerHTML = ""
     formDiv.innerHTML = ""
 
     showWorkoutDiv.innerHTML = `
@@ -874,15 +911,19 @@ function login(){
 
   }
   function checkPremierLeagueStandings(teams) {
+    cardDeck.innerHTML = ""
     const ptable = document.createElement("div")
     ptable.className = "ptable"
+    cardDeck.append(ptable)
 
-    document.body.append(ptable)
 
-    teams.forEach(team => {
+    let newTeamData = teams.sort(function(a, b) {
+      return a.wins - b.wins;
+    })
+
     ptable.innerHTML = `
         <h1 class="headin">Premier League Standings</h1>
-                <table>
+                <table id="teamTable">
                   <tr class="col">
                     <th>#</th>
                     <th>Team</th>
@@ -893,25 +934,30 @@ function login(){
                     <th>Goals</th>
                     <th>PTS</th>
                   </tr>
-                  <tr class="wpos" id="teamTable">
-                    <td>1</td>
-                    <td>${team.name}</td>
-                    <td>30</td>
-                    <td>${team.wins}</td>
-                    <td>${team.draws}</td>
-                    <td>${team.losses}</td>
-                    <td>${team.goals}</td>
-                  </tr>
-                </table>
+                  <tbody id="tableData">
+                  </tbody>
+              </table>
       </div>
       `
-      trId = document.getElementById("teamTable")
-      
-      teamName = document.createElement("td")
-      teamName.innerText = `${team.name}`
+      const tableBody = document.getElementById("tableData")
+      let dataHTML = ''; 
 
+      for(let data of newTeamData) {
+        dataHTML += `
+          <tr class="wpos"> 
+            <td>#</td>
+            <td>${data.name}</td>
+            <td>${data.wins + data.losses + data.draws}</td>
+            <td>${data.wins}</td>
+            <td>${data.draws}</td>
+            <td>${data.losses}</td>
+            <td>${data.goals}</td>
+            <td>${data.wins * 3 + data.draws * 1}</td>
+          </tr>
+        `
+        tableBody.innerHTML = dataHTML
+      }
 
-    })
 
 
   }
