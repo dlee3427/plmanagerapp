@@ -183,11 +183,6 @@ function register() {
                       </div>
 
                       <div class="form-label-group">
-                        <input type="text" id="user_picture" class="form-control" placeholder="Your Picture URL">
-                        <label for="user_picture">Your Picture</label>
-                      </div>
-
-                      <div class="form-label-group">
                         <select id="selectList" class="form-control">
                         </select>
                       </div>
@@ -283,10 +278,9 @@ function login(){
           },
           body: JSON.stringify({
             name: event.target[0].value, 
-            email: event.target[1].value,
-            user_picture: event.target[2].value,  
-            team_id: event.target[3].value,
-            password: event.target[4].value,
+            email: event.target[1].value, 
+            team_id: event.target[2].value,
+            password: event.target[3].value,
           })
       })
       .then(resp => resp.json())
@@ -361,7 +355,7 @@ function login(){
 
                                     <div class="xp-social-profile-desc">
                                     <p class="text-muted">Primary Kit Color: ${team.primary_color}</p>
-                                    <p class="text-muted">Secondary Kit color: ${team.secondary_color}</p>
+                                    <p class="text-muted">Secondary Kit Color: ${team.secondary_color}</p>
                                     </div>
 
                                 </div>
@@ -709,13 +703,13 @@ function login(){
     cardDeck.append(playerInformation)
 
     playerInformation.innerHTML = 
-    `<div class="row justify-content-md-center">
+    `<div class="row justify-content-md-center" id="playerCard">
     <div class="col-md-10" position:absolute; left:0; right:0;>
         <div class="card m-b-30">
             <div class="card-header bg-white">
                 <h5 class="card-title text-black mb-0">Player Profile</h5>
             </div>
-            <div class="card-body" id="playerCard">
+            <div class="card-body">
                 <div class="xp-social-profile">
                     <div class="xp-social-profile-img">
                         <div class="row">
@@ -749,15 +743,15 @@ function login(){
                             <div class="col">
                                 <div class="xp-social-profile-title">
                                     <h1 class="my-1 text-black">${player.name} #${player.number}</h5>
-                                </div>
+                                </div><br>
                                 <div class="xp-social-profile-subtitle">
                                     <h3 class="my-1 text-black">${player.position}</p>
                                 </div>
                                 <div class="xp-social-profile-subtitle">
-                                <p class="mb-3 text-muted">Salary: ${player.salary}</p>
-                                <p class="mb-3 text-muted">Nationality: ${player.nationality}</p>
+                                  <p class="mb-3 text-muted">Salary: £${player.salary}</p>
+                                  <p class="mb-3 text-muted">Nationality: ${player.nationality}</p>
+                                  <p class="mb-3 text-muted">Age: ${player.age}</p>
                                 </div>
-
                             </div>
                             </div>
                         </div>
@@ -788,19 +782,25 @@ function login(){
                                     <p class="mb-0 text-muted">Tackles</p>
                                 </div>
                             </div>
+                            <div class="col">
+                                <div class="xp-social-profile-following pt-3">
+                                    <h5 class="text-black my-1">${player.playing_time}</h5>
+                                    <p class="mb-0 text-muted">Playing Time</p>
+                                </div>
+                            </div>
                             </div>
                             <div class="row-btn-player">
                               <div class="col-btn-player" id="playerBtns">
                                 <div class="mx-auto">
                                   <button class="btn btn-light" id="schedWorkout">Schedule New Workout</button>
-                                  <button class="btn btn-light" id="checkSchedule">Check Schedule</button>
-                                  <button class="btn btn-light" id="teamRoster">Back to Team Roster</button>
+                                  <button class="btn btn-light" id="teamRoster">Back to Team Roster</button><br>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div> 
                       </div>
+                    </div>
 
     `
     const playerCard = document.getElementById("playerCard")
@@ -820,11 +820,15 @@ function login(){
       let card = document.createElement("div")
       card.className= "card-workout"
       workoutDeck.appendChild(card)
+
+      let br = document.createElement("br")
+      card.append(br)
       
       let workoutName = document.createElement("h4")
       workoutName.className = "workout-content-h4"
       workoutName.innerHTML = `${workout.name}` 
       card.appendChild(workoutName)
+    
 
       let wStartTime = document.createElement("p")
       wStartTime.className = "workout-content-p"
@@ -835,14 +839,26 @@ function login(){
       wEndTime.className = "workout-content-p"
       wEndTime.innerHTML = `End Time: ${formattedDate2}`
       card.appendChild(wEndTime)
-
+      
       let workoutDetail = document.createElement("button")
       workoutDetail.innerText = "Workout Detail"
-      workoutDetail.className = "workout-detail"
+      workoutDetail.className = "workout-detail btn btn-light"
       card.appendChild(workoutDetail)
       workoutDetail.addEventListener("click", () => {
         fetchWorkout(workout)
       })
+
+      let workoutDelete = document.createElement("button")
+      workoutDelete.innerText = "Delete Workout"
+      workoutDelete.className = "workout-detail btn btn-danger"
+      card.appendChild(workoutDelete)
+      workoutDelete.addEventListener("click", () => {
+        return fetch("http://localhost:3000/api/v1/workouts/"+workout.id, {
+          method: "DELETE"
+        })
+      .then(() => card.remove())
+      })
+
     })
 
     const playerBtns = document.getElementById("playerBtns")
@@ -881,14 +897,16 @@ function login(){
     playerBtns.append(btn)
 
     const schedWorkout = document.getElementById("schedWorkout")
-    const checkSched = document.getElementById("checkSchedule") 
     const backToHomePage = document.getElementById("teamRoster")
     
     schedWorkout.addEventListener("click", () => {
-      newWorkout(player)
-    })
-    checkSched.addEventListener("click", () => {
-      checkSched(player)
+      if (player.injured === true) {
+        window.alert("Your player is injured! He cannot train today!")
+        showPlayerDetails(player)
+      } else {
+        newWorkout(player)
+      
+      }
     })
     backToHomePage.addEventListener("click", () => {
       fetchPlayerTeam(player)
@@ -912,8 +930,7 @@ function login(){
     playerDetail.innerHTML = ""
     workoutList.innerHTML = ""
     cardDeck.innerHTML = ""
-    teamDiv.innerHTML = ""
-    divForm.innerHTML = 
+    cardDeck.innerHTML = 
     `<form method="post" id="newWorkout">
           <label for="workouts">Choose a Workout</label>
           <select name="workouts" id="getWorkouts"><br> 
@@ -922,14 +939,10 @@ function login(){
     </form>
     
     <button type="button" class="backToPlayer">Back To Player </button>
-    <button type="button" class="teamHomePage">Team Homepage </button> 
     `
     const teamHomePage = document.querySelector("button.teamHomePage")
     const backToPlayer = document.querySelector("button.backToPlayer")
     PopulateWorkoutList()
-    teamHomePage.addEventListener("click", () => {
-      getindividualTeam(player)
-    })
     backToPlayer.addEventListener("click", () => {
       showPlayerDetails(player)
     })
@@ -968,10 +981,16 @@ function login(){
     `<div class=”row”>
         <div class=”col-6 align-self-center”>
             <div class=”card card-block”>
-            <h2 class="teamName">${team.name} Expenses for the 2020 Season</h2>
-              <canvas id="myChart" width="600" height="600"></canvas>
-            <h2 class="teamName">${team.name} Revenue Streams for 2020 Season</h2>
-              <canvas id="secondChart" width="600" height="600"></canvas>
+              <div id="parentContainer" style="width: 100%;">
+                <div id="chartContainer1" style="float: left; width: 45%; height: 260px;">
+                  <h2 class="teamName"> Expenses for 2020 Season</h2><br><br>
+                  <canvas id="myChart" width="600" height="600"></canvas><br><br><br>
+                </div>
+                <div id="chartContainer2" style="float: right; width: 45%; height: 260px;">
+                  <h2 class="teamName">Revenue Streams for 2020 Season</h2><br><br>
+                  <canvas id="secondChart" width="600" height="600"></canvas><br><br><br>
+                </div>
+              </div>
             </div>
         </div>
     </div>
@@ -1021,75 +1040,102 @@ function login(){
     })
   }
 
-//   function createPlayerWorkout(player, event) {
-//  
-//     fetch("http://localhost:3000/api/v1/player_workouts", {
-//       method: "POST", 
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Accept": "application/json"
-//       },
-//       body: JSON.stringify({
-//         workout_id: event.target[0].value,
-//         player_id: player.id
-//       })   
-//   })
-//   .then(resp => resp.json())
-//   .then(workout => showWorkout(workout))
-// }
+  function createPlayerWorkout(player, event) {
+ 
+    fetch("http://localhost:3000/api/v1/player_workouts", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        workout_id: event.target[0].value,
+        player_id: player.id
+      })   
+  })
+  .then(resp => resp.json())
+}
 
   function showWorkout(workout) {
     playerDetail.innerHTML = ""
     workoutList.innerHTML = ""
-    teamDiv.innerHTML = ""
     formDiv.innerHTML = ""
     cardDeck.innerHTML = ""
+    var e = new Date(`${workout.start_time}`)
+    var date = e.toLocaleDateString()
 
-    showWorkoutDiv.innerHTML = `
-    <h2>${workout.name}</h2> 
-    <h4>Workout Start Time:${workout.start_time}</h4>
-    <h4>Workout End Time: ${workout.end_time}</h4>
-
-    <button id="backtoPlayer">Back to Player</button>
-
-    <h5>List of Exercises</h5>
-    `
-    const backtoPlayer = document.getElementById("backtoPlayer")
-    backtoPlayer.addEventListener("click", () => {
-
-    })
+    var c = new Date(`${workout.start_time}`)
+    var startDate = c.toLocaleTimeString()
     
-    const showExerciseDiv = document.getElementById("showExercises")
+    var d = new Date(`${workout.end_time}`)
+    var endDate = d.toLocaleTimeString()
+    
+
+    cardDeck.innerHTML = `
+    <div class="row justify-content-md-center">
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black mb-0">Workout Detail</h5>
+            </div>
+            <div class="card-body-workout" id="workoutCard">
+                <div class="xp-social-profile">
+                    <div class="xp-social-profile-middle text-center">
+                        <div class="row">
+                            <div class="col">
+                                <div class="xp-social-profile-title">
+                                    <h4 class="my-1 text-black">${workout.name}</h4>
+                                </div><br>
+                                <div class="xp-social-profile-title">
+                                    <p class="my-1 text-black">Workout Date: ${date}</p>
+                                    <p class="my-1 text-black">Workout Start Time: ${startDate}</p>
+                                    <p class="my-1 text-black">Workout End Time: ${endDate}</h4><br>
+                                </div><br>
+                                <div class="xp-social-profile-subtitle" id="showExercises">
+                                  <h4>Exercises</h4><br>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+    `    
+    const showExerciseDiv = document.getElementById("workoutCard")
     let exercises = workout["exercises"]
     exercises.forEach(exercise => {
-         
-      let card = document.createElement("div")
-      card.className = "card-exercse"
-      showExerciseDiv.appendChild(card)
 
-      let workoutInformation = document.createElement("div")
-      workoutInformation.className = "exercise-information"
-      card.append(workoutInformation)
+      let cardGroup = document.createElement("div")
+      cardGroup.className = "card-exercise"
+      showExerciseDiv.appendChild(cardGroup)
 
-      let exerciseName = document.createElement("p")
-      exerciseName.innerHMTL = exercise.name
-      workoutInformation.append(exerciseName)
-
-      let exerciseType = document.createElement("p")
+      let cardContent = document.createElement("div")
+      cardGroup.append(cardContent)
+      
+      let br = document.createElement("br")
+      cardContent.append(br)
+      
+      let exerciseType = document.createElement("h5")
       exerciseType.innerHTML = exercise.exercise_type
-      workoutInformation.append(exerciseType)
+      cardContent.append(exerciseType)
+
+      let exerciseTitle = document.createElement("h2")
+      exerciseTitle.innerHMTL = exercise.name
+      cardContent.append(exerciseTitle)
 
       let exerciseSets = document.createElement("p")
       exerciseSets.innerHTML = `Sets: ${exercise.sets}` 
-      workoutInformation.append(exerciseSets)
+      cardContent.append(exerciseSets)
 
       let exerciseReps = document.createElement("p")
       exerciseReps.innerHTML = `Reps: ${exercise.reps}` 
-      workoutInformation.append(exerciseReps)
+      cardContent.append(exerciseReps)
 
       let exerciseDuration = document.createElement("p")
-      exerciseDuration.innerHTML = `Duration: ${exercise.duration} seconds`
-      workoutInformation.append(exerciseDuration)
+      exerciseDuration.innerHTML = `${exercise.duration} seconds`
+      cardContent.append(exerciseDuration)
+
+ 
     })
 
 
@@ -1106,10 +1152,13 @@ function login(){
     ptable.className = "ptable"
     cardDeck.append(ptable)
 
+    debugger
 
     let newTeamData = teams.sort(function(a, b) {
       b.wins - a.wins;
     })
+
+    debugger 
 
     ptable.innerHTML = `
         <h1 class="headin">Premier League Standings</h1>

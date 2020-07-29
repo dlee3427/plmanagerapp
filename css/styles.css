@@ -5,7 +5,7 @@
 
 body{
     margin:0; 
-    font-family: PremierSans-Regular,Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-family: PremierSans-Regular, Arial, Helvetica Neue, Helvetica,sans-serif;
     font-size:1rem;
     line-height:1.5; 
     background-color: #38003c;
@@ -64,7 +64,7 @@ body{
   text-align: center;
   font-size: 20px; 
   margin-top: 10px;
-  color:#00ff85;
+  color: #D1D3D4;
 }
 
 .workout-content-p {
@@ -188,6 +188,21 @@ body{
     margin-left: 30px !important;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
+
+.card-exercise {
+  margin-top: 20px;
+  margin-bottom: 20px !important;
+  margin-left: 20px !important;
+  display: inline-block;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 200px;
+  height: 175px;
+  background-color: #feff9c;
+}
+
+
+
 
 .card-image-player img {
     width: 400px;
@@ -426,13 +441,14 @@ body{
   }
 
   .card-workout {
+    margin-top: 10px;
     margin-bottom: 10px !important;
     margin-left: 20px !important;
     border-radius: 7px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-    width: 300px;
-    height: 175px; 
-    background-color: #38003c
+    width: 400px;
+    height: 250px; 
+    background-color:#034694;
   }
   
   .workout-detail {
@@ -450,4 +466,12 @@ body{
   flex-direction: column;
   justify-content: center;
   text-align: center;
+}
+
+.card-body-workout {
+  width: 800px;
+  height: 500px;
+  text-align: center;
+  vertical-align: middle; 
+  flex-direction: column;
 }
