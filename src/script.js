@@ -6,7 +6,7 @@ let divForm = document.getElementById("formDiv")
 let header = document.getElementById("header")
 const teamDetails = document.getElementById("showTeamDetails")
 const playerRoster = document.getElementById("playerRoster")
-const workoutList = document.getElementById("workoutList")
+
 const playerDetail = document.getElementById("showPlayerDetails")
 const teamPictures = document.getElementById("teamPictures")
 const teamInformation = document.getElementById("teamInformation")
@@ -118,18 +118,18 @@ function PopulateTeamDropDownList() {
               }  
             )}
 
-function PopulateExerciseList() {
+function PopulateWorkoutList() {
 
-  let selectList = document.getElementById("exercises");
+  let selectList = document.getElementById("getWorkouts");
   selectList.length = 0;
   
   let defaultOption = document.createElement('option');
-  defaultOption.text = 'Choose an Exercise';
+  defaultOption.text = 'Choose a Workout';
   selectList.add(defaultOption);
   
   selectList.selectedIndex = 0;
 
-  fetch("http://localhost:3000/api/v1/exercises")  
+  fetch("http://localhost:3000/api/v1/workouts")  
     .then(  
       function(response) {  
         if (response.status !== 200) {  
@@ -142,7 +142,7 @@ function PopulateExerciseList() {
       
         for (let i = 0; i < data.length; i++) {
             option = document.createElement('option');
-            option.text = data[i].name;
+            option.text = data[i].name
             option.value = data[i].id;
             selectList.add(option)
         }    
@@ -155,42 +155,61 @@ function register() {
     `	
       <header class="v-header container"> 
         <div class="full-screen-video-wrap"> 
-        <video autoplay muted loop id="myVideo"> 
-              <source src="prem.mp4" type="video/mp4"
-        </video>
+          <video autoplay muted loop id="myVideo"> 
+                <source src="prem.mp4" type="video/mp4">
+          </video>
         </div> 
         <div class="header-overlay">
         </div> 
         <div class="header-content"> 
-          <h1>Register</h1>
-          <form method="post" id="registerForm">
-                <div class="form-group">
-                  <label for="name">Name: </label>
-                  <input type="text" name="name">
+        <div class="container">
+            <div class="row">
+              <div class="col-lg-10 col-xl-9 mx-auto">
+                <div class="card card-signin flex-row my-5">
+                  <div class="card-img-left d-none d-md-flex">
+                    <!-- Background image for card set in CSS! -->
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title text-center">Register</h5>
+                    <form class="form-signin" id="registerForm">
+                      <div class="form-label-group">
+                        <input type="text" id="name" class="form-control" placeholder="Name" required autofocus>
+                        <label for="name">Name</label>
+                      </div>
+        
+                      <div class="form-label-group">
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email Address" required>
+                        <label for="inputEmail">Email address</label>
+                      </div>
+
+                      <div class="form-label-group">
+                        <input type="text" id="user_picture" class="form-control" placeholder="Your Picture URL">
+                        <label for="user_picture">Your Picture</label>
+                      </div>
+
+                      <div class="form-label-group">
+                        <select id="selectList" class="form-control">
+                        </select>
+                      </div>
+        
+                      <div class="form-label-group">
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                        <label for="inputPassword">Password</label>
+                      </div>
+                      
+                      <div class="form-label-group">
+                        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password" required>
+                        <label for="inputConfirmPassword">Confirm password</label>
+                      </div>
+
+                      <input type="submit" value="Register">
+        
+                    </form>
+                  </div>
                 </div>
-
-                <div class="form-group">
-                  <label for="email">Email </label>
-                  <input type="email" class="form-control"name="email"> 
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                <div>
-                
-                <label for="user_picture">Your Picture </label>
-                <input type="text" name="user_picture">
-
-                <label for="selectList">Team</label>
-                <select id="selectList">
-                </select>
-
-                <label for="password">Password </label>
-                <input type="password" name="password">
-
-                <label for="password_confirmation">Password Confirmation</label>
-                <input type="password" name="password_confirmation">
-                
-                <input type="submit" value="Submit">
-          </form>
-        </div>
+              </div>
+            </div>
+          </div>
       </header> 
       `
     let form = document.getElementById("registerForm")
@@ -341,8 +360,9 @@ function login(){
                                     </div>
 
                                     <div class="xp-social-profile-desc">
-                                    <p class="text-muted">Primary Kit Color:${team.primary_color} Secondary Kit Color: ${team.secondary_color}</p>
-                                   </div>
+                                    <p class="text-muted">Primary Kit Color: ${team.primary_color}</p>
+                                    <p class="text-muted">Secondary Kit color: ${team.secondary_color}</p>
+                                    </div>
 
                                 </div>
                                 </div>
@@ -352,41 +372,40 @@ function login(){
                             <div class="row">
                                 <div class="col">
                                     <div class="xp-social-profile-media pt-3">
-                                        <h5 class="text-black my-1">${team.wins}</h5>
+                                        <h5 class="text-black my-1" id="teamWins">${team.wins}</h5>
                                         <p class="mb-0 text-muted">Wins</p>
+                                        <button id="incrementWins" class="btn btn-light">+</button>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="xp-social-profile-followers pt-3">
-                                        <h5 class="text-black my-1">${team.draws}</h5>
+                                        <h5 class="text-black my-1" id="teamDraws">${team.draws}</h5>
                                         <p class="mb-0 text-muted">Draws</p>
+                                        <button id="incrementDraws" class="btn btn-light">+</button>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="xp-social-profile-following pt-3">
-                                        <h5 class="text-black my-1">${team.losses}</h5>
+                                        <h5 class="text-black my-1" id="teamLosses">${team.losses}</h5>
                                         <p class="mb-0 text-muted">Losses</p>
+                                        <button id="incrementLosses" class="btn btn-light">+</button>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="xp-social-profile-following pt-3">
-                                        <h5 class="text-black my-1">${team.wins * 3 + team.draws * 1}</h5>
+                                        <h5 class="text-black my-1" id="teamPoints">${team.wins * 3 + team.draws * 1}</h5>
                                         <p class="mb-0 text-muted">Points</p>
                                     </div>
-                                </div>
-                                <div class="col">
-                                  <div class="xp-social-profile-following pt-3">
-                                      <h5 class="text-black my-1">${rosterTotal}</h5>
-                                      <p class="mb-0 text-muted"># on Roster</p>
-                                  </div>
                                 </div>
                             </div> 
                             <div class="row-btn">
                               <div class="col-btn">
-                                <button class="btn btn-light" id="signPlayerBtn">Sign New Player</button>
-                                <button class="btn btn-light" id="checkTeamSchedBtn">Check Team Schedule </button>
-                                <button class="btn btn-light" id="teamFinancesBtn">Check Team Finances</button>
-                                <button class="btn btn-light" id="premStandings">Premier League Standings</button>
+                                <div class="mx-auto">
+                                  <button class="btn btn-light" id="signPlayerBtn">Sign New Player</button>
+                                  <button class="btn btn-light" id="checkTeam">Team Roster</button>
+                                  <button class="btn btn-light" id="teamFinancesBtn">Check Team Finances</button>
+                                  <button class="btn btn-light" id="premStandings">Premier League Standings</button>
+                                </div>
                               <div/>
                             </div>
                         </div>
@@ -398,15 +417,80 @@ function login(){
     document.body.append(teamDiv)
 
     const signPlayerBtn = document.querySelector("button#signPlayerBtn")
-    const teamSchedBtn = document.querySelector("button#checkTeamSchedBtn") 
+    const teamBtn = document.querySelector("button#checkTeam") 
     const teamFinancesBtn = document.querySelector("button#teamFinancesBtn")
     const premLeague = document.querySelector("button#premStandings")
-    
+    const incrWins = document.getElementById("incrementWins")
+    const incrDraws = document.getElementById("incrementDraws")
+    const incrLosses = document.getElementById("incrementLosses")
+    const teamWins = document.getElementById("teamWins")
+    const teamDraws = document.getElementById("teamDraws")
+    const teamLosses = document.getElementById("teamLosses")
+    const teamPoints = document.getElementById("teamPoints")
+
+    incrWins.addEventListener("click", () => {
+      return fetch("http://localhost:3000/api/v1/teams/"+team.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          wins: team.wins + 1 
+        })
+      })
+      .then(resp => resp.json())
+      .then(updatedTeam => {
+        teamWins.innerText = updatedTeam.wins
+        teamPoints.innerText = updatedTeam.wins * 3 + updatedTeam.draws
+        team = updatedTeam
+      })
+    })
+
+    incrDraws.addEventListener("click", () => {
+      return fetch("http://localhost:3000/api/v1/teams/"+team.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          draws: team.draws + 1 
+        })
+      })
+      .then(resp => resp.json())
+      .then(updatedTeam => {
+        teamDraws.innerText = updatedTeam.draws
+        teamPoints.innerText = updatedTeam.wins * 3 + updatedTeam.draws
+        team = updatedTeam
+      })
+    })
+
+    incrLosses.addEventListener("click", () => {
+      return fetch("http://localhost:3000/api/v1/teams/"+team.id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          losses: team.losses + 1 
+        })
+      })
+      .then(resp => resp.json())
+      .then(updatedTeam => {
+        teamLosses.innerText = updatedTeam.losses
+        teamPoints.innerText = updatedTeam.wins * 3 + updatedTeam.draws
+        team = updatedTeam
+      })
+    })
+
+
     signPlayerBtn.addEventListener("click", () => {
       signPlayer()
     })
-    teamSchedBtn.addEventListener("click", () => {
-      seeTeamSched(team)
+    teamBtn.addEventListener("click", () => {
+      showTeamDetails(team)
     })
     teamFinancesBtn.addEventListener("click", () => {
       seeTeamFinances(team)
@@ -415,8 +499,6 @@ function login(){
       fetchAllTeams()
     })
 
-
-  
     document.body.appendChild(cardDeck)
 
     let char = team["players"];
@@ -471,7 +553,7 @@ function login(){
 
       let showPlayerBtn = document.createElement("button")
       showPlayerBtn.innerHTML = "Show Player Details"
-      showPlayerBtn.className = "btn btn-primary"
+      showPlayerBtn.className = "btn btn-light"
       showPlayerBtn.addEventListener("click", () => {
         showPlayerDetails(player)
       })
@@ -563,7 +645,8 @@ function login(){
               <hr class="my-4">
 
               <input type="submit" value="Submit">
-  
+
+
             </form>
           </div>
         </div>
@@ -583,7 +666,6 @@ function login(){
   function createNewPlayer(event) {
       fetch("http://localhost:3000/api/v1/players", {
           method: "POST", 
-          mode: "cors",
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -602,8 +684,9 @@ function login(){
             age: event.target[10].value,
           })
       })
-      .then(resp => resp.json())
+      .then(resp => resp.json()) 
       .then(player => showPlayerDetails(player))
+
   }
 
   function showPlayerDetails(player) {
@@ -611,11 +694,6 @@ function login(){
     cardDeck.innerHTML = ""
     
     cardDeck.append(playerDetail)
-
-    const img = document.createElement("img")
-    img.src = player.player_picture
-    img.style = "width:450px;height:400px"
-    playerDetail.prepend(img)
 
     const injuryStatus = document.createElement("p")
     if (player.injured === true) {
@@ -625,60 +703,157 @@ function login(){
       injuryStatus.style = "color:green"
       injuryStatus.innerText = "Injury Status: Player is Healthy!"
     }
-    playerDetail.append(injuryStatus)
 
     const playerInformation = document.createElement("div")
     playerInformation.id = "playerInformation"
     cardDeck.append(playerInformation)
 
     playerInformation.innerHTML = 
+    `<div class="row justify-content-md-center">
+    <div class="col-md-10" position:absolute; left:0; right:0;>
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black mb-0">Player Profile</h5>
+            </div>
+            <div class="card-body" id="playerCard">
+                <div class="xp-social-profile">
+                    <div class="xp-social-profile-img">
+                        <div class="row">
+                            <div class="playerPicture">
+                                <img src="${player.country_picture}" class="rounded img-fluid" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-social-profile-top">
+                        <div class="row">
+                            <div class="col">
+                                <div class="xp-social-profile-star py-3">
+                                    <i class="mdi mdi-star font-24"></i>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-avatar text-center">
+                                    <img src="${player.player_picture}" alt="user-profile" class="rounded-circle img-fluid">
+                                    <span class="xp-social-profile-live"></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-menu text-right py-3">
+                                    <i class="mdi mdi-dots-horizontal font-24"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-social-profile-middle text-center">
+                        <div class="row">
+                            <div class="col">
+                                <div class="xp-social-profile-title">
+                                    <h1 class="my-1 text-black">${player.name} #${player.number}</h5>
+                                </div>
+                                <div class="xp-social-profile-subtitle">
+                                    <h3 class="my-1 text-black">${player.position}</p>
+                                </div>
+                                <div class="xp-social-profile-subtitle">
+                                <p class="mb-3 text-muted">Salary: ${player.salary}</p>
+                                <p class="mb-3 text-muted">Nationality: ${player.nationality}</p>
+                                </div>
+
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-social-profile-bottom text-center">
+                        <div class="row">
+                            <div class="col">
+                                <div class="xp-social-profile-media pt-3">
+                                    <h5 class="text-black my-1">${player.appearances}</h5>
+                                    <p class="mb-0 text-muted">Appearances</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-followers pt-3">
+                                    <h5 class="text-black my-1">${player.goals}</h5>
+                                    <p class="mb-0 text-muted">Goals</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-following pt-3">
+                                    <h5 class="text-black my-1">${player.assists}</h5>
+                                    <p class="mb-0 text-muted">Assists</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-following pt-3">
+                                    <h5 class="text-black my-1">${player.tackles}</h5>
+                                    <p class="mb-0 text-muted">Tackles</p>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row-btn-player">
+                              <div class="col-btn-player" id="playerBtns">
+                                <div class="mx-auto">
+                                  <button class="btn btn-light" id="schedWorkout">Schedule New Workout</button>
+                                  <button class="btn btn-light" id="checkSchedule">Check Schedule</button>
+                                  <button class="btn btn-light" id="teamRoster">Back to Team Roster</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div> 
+                      </div>
+
     `
-     <h3>${player.name}</h3>
-     <h3>${player.position}</h3>
-     <h3>${player.number}</h3>
-     <h3>${player.salary}</h3>
-     <h3>${player.nationality}</h3>
-    
-     <h4>Player Statistics</h4> 
-     <p>Appearances: ${player.appearances}</p>
-     <p>Goals:${player.goals}</p>
-     <p>Assists: ${player.assists}</p>
-     <p>Successful Passes: ${player.passes}</p>
-     <p>Tackles: ${player.tackles}</p>
-     <h4> Upcoming Workouts </h4> 
-    `
-    playerDetail.append(playerInformation)
+    const playerCard = document.getElementById("playerCard")
     let char = player["workouts"]
     char.forEach(workout => {
+
+      var a = new Date(`${workout.start_time}`)
+      var formattedDate1 = a.toLocaleString()
+      
+      var b = new Date(`${workout.end_time}`)
+      var formattedDate2 = b.toLocaleString()
+      
+      let workoutDeck = document.createElement("div")
+      workoutDeck.className = "card-deck-workouts"
+      playerCard.appendChild(workoutDeck)
+
       let card = document.createElement("div")
-      card.className= "card"
-      workoutList.appendChild(card)
+      card.className= "card-workout"
+      workoutDeck.appendChild(card)
       
       let workoutName = document.createElement("h4")
-      workoutName.innerHTML = `Workout Name: ${workout.name}` 
+      workoutName.className = "workout-content-h4"
+      workoutName.innerHTML = `${workout.name}` 
       card.appendChild(workoutName)
 
       let wStartTime = document.createElement("p")
-      wStartTime.innerHTML = `Workout Start Time: ${workout.start_time}` 
+      wStartTime.className = "workout-content-p"
+      wStartTime.innerHTML = `Start Time: ${formattedDate1}` 
       card.appendChild(wStartTime)
 
       let wEndTime = document.createElement("p")
-      wEndTime.innerHTML = `Workout End Time: ${workout.end_time}`
+      wEndTime.className = "workout-content-p"
+      wEndTime.innerHTML = `End Time: ${formattedDate2}`
       card.appendChild(wEndTime)
 
       let workoutDetail = document.createElement("button")
       workoutDetail.innerText = "Workout Detail"
+      workoutDetail.className = "workout-detail"
       card.appendChild(workoutDetail)
       workoutDetail.addEventListener("click", () => {
         fetchWorkout(workout)
       })
     })
 
+    const playerBtns = document.getElementById("playerBtns")
     const btn = document.createElement("button")
+    btn.className = "btn btn-light"
     if (player.injured === true) {
       btn.innerText = "Injured!"
+      btn.className = "btn btn-danger"
     } else {
       btn.innerText = "Healthy"
+      btn.className = "btn btn-success"
     }
     btn.addEventListener("click", () => {
       player.injured = !player.injured
@@ -696,22 +871,19 @@ function login(){
       .then(updatedPlayer => {
         if(updatedPlayer.injured === true ) {
           btn.innerText = "Injured!" 
+          btn.className = "btn btn-danger"
         } else {
           btn.innerText = "Healthy"
+          btn.className = "btn btn-success"
         }
       })
     })
+    playerBtns.append(btn)
 
-
-    const schedWorkout = document.createElement("button")
-    schedWorkout.innerText = "Schedule New Workout"
-
-    const checkSched = document.createElement("button") 
-    checkSched.innerText = "Check Weekly Schedule"
-
-    const backToHomePage = document.createElement("button")
-    backToHomePage.innerText = "Back To Team"
-
+    const schedWorkout = document.getElementById("schedWorkout")
+    const checkSched = document.getElementById("checkSchedule") 
+    const backToHomePage = document.getElementById("teamRoster")
+    
     schedWorkout.addEventListener("click", () => {
       newWorkout(player)
     })
@@ -721,9 +893,6 @@ function login(){
     backToHomePage.addEventListener("click", () => {
       fetchPlayerTeam(player)
     })
-
-    playerDetail.append(schedWorkout, checkSched, backToHomePage, btn)
-
   }
 
   function fetchPlayerTeam(player) {
@@ -740,30 +909,15 @@ function login(){
 
 
   function newWorkout(player) {
-    debugger
     playerDetail.innerHTML = ""
     workoutList.innerHTML = ""
     cardDeck.innerHTML = ""
     teamDiv.innerHTML = ""
     divForm.innerHTML = 
     `<form method="post" id="newWorkout">
-          <label for="name">Name </label>
-          <input type="text" name="name" required><br>
-
-          <label for="exercises">Exercise </label>
-          <select name="exercises" id="exercises"><br> 
+          <label for="workouts">Choose a Workout</label>
+          <select name="workouts" id="getWorkouts"><br> 
           </select>
-
-          <label for "players">Player</label>
-          <select name="players" id="players"><br>
-          </select>
-
-          <label for="start_time">Start Time </label>
-          <input type="time" name="start_time" required><br>
-
-          <label for="end_time">End Time </label>
-          <input type="time" name="end_time" required><br>
-
           <input type="submit" value="Submit">
     </form>
     
@@ -772,20 +926,19 @@ function login(){
     `
     const teamHomePage = document.querySelector("button.teamHomePage")
     const backToPlayer = document.querySelector("button.backToPlayer")
-    PopulateExerciseList()
+    PopulateWorkoutList()
     teamHomePage.addEventListener("click", () => {
       getindividualTeam(player)
     })
     backToPlayer.addEventListener("click", () => {
       showPlayerDetails(player)
     })
-    debugger
+  
     let form = document.getElementById("newWorkout")
-    PopulateExerciseList()
-    PopulatePlayerList()
+
     form.addEventListener("submit", () => {
       event.preventDefault()
-      createWorkout(event)
+      createPlayerWorkout(player, event)
     })
   }
 
@@ -810,49 +963,87 @@ function login(){
     let players = team["players"]
     var playerSalary = players.map(player => player.salary).reduce((acc, salary) => salary + acc)
     
+
     teamFinances.innerHTML = 
+    `<div class=”row”>
+        <div class=”col-6 align-self-center”>
+            <div class=”card card-block”>
+            <h2 class="teamName">${team.name} Expenses for the 2020 Season</h2>
+              <canvas id="myChart" width="600" height="600"></canvas>
+            <h2 class="teamName">${team.name} Revenue Streams for 2020 Season</h2>
+              <canvas id="secondChart" width="600" height="600"></canvas>
+            </div>
+        </div>
+    </div>
+    
     `
-    <h2>${team.name} Yearly Finances for the 2019 Season</h3> 
-    <h2> Team Budget This Season: £${team.team_budget - playerSalary} </h4>
-    <h3> Number of Players on Contract: ${team.players.length}</h3> 
-    <h3>Total Value of Player Contracts: £${playerSalary} </h3>
+    let CHART = document.getElementById("myChart").getContext('2d');
+    let doughnutChart = new Chart(CHART, {
+      type: 'doughnut',
+      data: {
+        labels: ["Travel Expenses", "Merchandise Costs", "Marketing Expenses", "Employee Expenses", "Player Contracts", "Taxes"],
+        datasets: [
+          {
+            backgroundColor: ['#f1c40f', '#e67e22', '#16a085', '#2980b9', '#e90052', '#00ff85'],
+            data: [team.travel_expenses, team.merchandising_costs, team.marketing_expenses, team.employee_expenses, playerSalary, team.taxes]
+          }
+        ]
+      }, 
+      options: {
+        responsive: false,
+        cutoutPercentage: 0,
+        animation: {
+          animateScale: true
+        }
+      }
+    })
 
-    <h3> Number of Coaches on Contract: ${team.users.length}</h3>
 
-    <button id="backtoHome">Back to Team Details</button>
-    `
-
-    const teamBtn = document.getElementById("backtoHome")
-    teamBtn.addEventListener("click", () => {
-      showTeamDetails(team)
+    const newChart = document.getElementById("secondChart").getContext("2d"); 
+    let revenueChart = new Chart(newChart, {
+      type: 'doughnut', 
+      data: {
+        labels: ["Concession Sales", "Sponsorship Value", "Ticket Sales"],
+        datasets: [
+          {
+            backgroundColor: ['#04f5ff', '#e90052', '#00ff85'],
+            data: [team.concession_sales, team.sponsorship_value, team.ticket_sales]
+          }
+        ]
+      },
+      options: {
+        responsive: false,
+        cutoutPercentage: 0,
+        animation: {
+          animateScale: true
+        }
+      }
     })
   }
 
-  function createWorkout(event) {
-    debugger
-    fetch("http://localhost:3000/api/v1/workouts", {
-      method: "POST", 
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        name: event.target[0].value,
-        exercise_id: event.target[1].value,
-        player_id: event.target[2].value,
-        start_time: event.target[3].value,
-        end_time: event.target[4].value
-      })   
-  })
-  .then(resp => resp.json())
-  .then(workout => showWorkout(workout))
-}
+//   function createPlayerWorkout(player, event) {
+//  
+//     fetch("http://localhost:3000/api/v1/player_workouts", {
+//       method: "POST", 
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Accept": "application/json"
+//       },
+//       body: JSON.stringify({
+//         workout_id: event.target[0].value,
+//         player_id: player.id
+//       })   
+//   })
+//   .then(resp => resp.json())
+//   .then(workout => showWorkout(workout))
+// }
 
   function showWorkout(workout) {
     playerDetail.innerHTML = ""
     workoutList.innerHTML = ""
     teamDiv.innerHTML = ""
     formDiv.innerHTML = ""
+    cardDeck.innerHTML = ""
 
     showWorkoutDiv.innerHTML = `
     <h2>${workout.name}</h2> 
@@ -863,43 +1054,42 @@ function login(){
 
     <h5>List of Exercises</h5>
     `
-    const backtoPlayer = document.createElement("button")
-    backtoPlayer.innerText = "Back to Player"
+    const backtoPlayer = document.getElementById("backtoPlayer")
+    backtoPlayer.addEventListener("click", () => {
 
-
-    const listExercises = document.createElement("h5")
-    listExercises.innerHTML = "List of Exercises"
-
-    showWorkoutDiv.append(backtoPlayer, listExercises)
+    })
     
     const showExerciseDiv = document.getElementById("showExercises")
-    debugger
     let exercises = workout["exercises"]
     exercises.forEach(exercise => {
          
       let card = document.createElement("div")
-      card.className = "card"
+      card.className = "card-exercse"
       showExerciseDiv.appendChild(card)
+
+      let workoutInformation = document.createElement("div")
+      workoutInformation.className = "exercise-information"
+      card.append(workoutInformation)
 
       let exerciseName = document.createElement("p")
       exerciseName.innerHMTL = exercise.name
-      card.append(exerciseName)
+      workoutInformation.append(exerciseName)
 
       let exerciseType = document.createElement("p")
       exerciseType.innerHTML = exercise.exercise_type
-      card.append(exerciseType)
+      workoutInformation.append(exerciseType)
 
       let exerciseSets = document.createElement("p")
       exerciseSets.innerHTML = `Sets: ${exercise.sets}` 
-      card.append(exerciseSets)
+      workoutInformation.append(exerciseSets)
 
       let exerciseReps = document.createElement("p")
       exerciseReps.innerHTML = `Reps: ${exercise.reps}` 
-      card.append(exerciseReps)
+      workoutInformation.append(exerciseReps)
 
       let exerciseDuration = document.createElement("p")
       exerciseDuration.innerHTML = `Duration: ${exercise.duration} seconds`
-      card.append(exerciseDuration)
+      workoutInformation.append(exerciseDuration)
     })
 
 
@@ -918,7 +1108,7 @@ function login(){
 
 
     let newTeamData = teams.sort(function(a, b) {
-      return a.wins - b.wins;
+      b.wins - a.wins;
     })
 
     ptable.innerHTML = `
@@ -945,7 +1135,7 @@ function login(){
       for(let data of newTeamData) {
         dataHTML += `
           <tr class="wpos"> 
-            <td>#</td>
+            <td>${data.id}</td>
             <td>${data.name}</td>
             <td>${data.wins + data.losses + data.draws}</td>
             <td>${data.wins}</td>
@@ -957,31 +1147,7 @@ function login(){
         `
         tableBody.innerHTML = dataHTML
       }
-
-
-
   }
 
-
-  // function createPlayerWorkouts(player) {
-  //     debugger
-  //     player_id = player.id
-  //     fetch("http://localhost:3000/api/v1/workouts", {
-  //       method: "POST", 
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "Accept": "application/json"
-  //       },
-  //       body: JSON.stringify({
-  //         name: event.target[0].value,
-  //         exercise_id: event.target[1].value,
-  //         player_id: player_id,
-  //         start_time: event.target[3].value,
-  //         end_time: event.target[4].value
-  //       })   
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(workout => showWorkout(workout))
-  // }
 
 
