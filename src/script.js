@@ -23,6 +23,9 @@ cardDeck.className = "card-deck"
 
 
 function homePage() {
+  teamDiv.innerHTML = ""
+  cardDeck.innerHTML = ""
+
   divForm.innerHTML = 
   `
   <section class="content-section video-section">
@@ -205,12 +208,13 @@ function showUser(user) {
                                 </div>
                                 <div class="xp-social-profile-subtitle">
                                     <h5 class="my-1 text-black">Your Team: ${user.team.name}</p>
-                                    <h5 class="my-1 text-black">Your Salary: ${user.salary}</p>
+                                    <h5 class="my-1 text-black">Your Salary: £${user.salary}</p>
                                     <h5 class="my-1 text-black">Your Nationality: ${user.nationality}</p>
+                                    <h5 class="my-1 text-black">Number of Players Managed: ${user.team.players.length}</p>
                                 </div><br>
                                 <div class="xp-social-profile-subtitle">
                                   <button class="btn btn-light" id="getTeam">Go to Team Information</button>
-                                  <button class="btn btn-light" id="logOut">Log Out</button><br>
+                                  <button class="btn btn-danger" id="logOut">Log Out</button><br>
                                 </div><br><br>
                             </div>
                             </div>
@@ -229,7 +233,7 @@ function showUser(user) {
     getindividualTeam(user)
   ])
   logOut.addEventListener("click", () => {
-    login()
+    homePage()
   })
 
 
@@ -268,6 +272,8 @@ function PopulateWorkoutList() {
     )}
 
 function register() {
+    cardDeck.innerHTML = ""
+    teamDiv.innerHTML = ""
     divForm.innerHTML = 
     `	
       <header class="v-header container"> 
@@ -334,6 +340,8 @@ function register() {
 }
 
 function login(){
+    teamDiv.innerHTML = ""
+    cardDeck.innerHTML = ""
     divForm.innerHTML =
       ` 
       <header class="v-header container"> 
@@ -522,6 +530,9 @@ function login(){
                                   <button class="btn btn-light" id="checkTeam">Team Roster</button>
                                   <button class="btn btn-light" id="teamFinancesBtn">Check Team Finances</button>
                                   <button class="btn btn-light" id="premStandings">Premier League Standings</button>
+                                  <button class="btn btn-light" id="checkSched">Team Schedule</button><br><br>
+                                  <button class="btn btn-danger" id="logOutBtn">Log Out</button> 
+
                                 </div>
                               <div/>
                             </div>
@@ -544,6 +555,17 @@ function login(){
     const teamDraws = document.getElementById("teamDraws")
     const teamLosses = document.getElementById("teamLosses")
     const teamPoints = document.getElementById("teamPoints")
+    const logOut = document.getElementById("logOutBtn")
+    const checkTeamSched = document.getElementById("checkSched")
+
+    checkTeamSched.addEventListener("click", () => {
+      fetchMatches(team)
+    })
+
+    logOut.addEventListener("click", () => {
+      homePage()
+    })
+
 
     incrWins.addEventListener("click", () => {
       return fetch("http://localhost:3000/api/v1/teams/"+team.id, {
@@ -604,7 +626,7 @@ function login(){
 
 
     signPlayerBtn.addEventListener("click", () => {
-      signPlayer()
+      signPlayer(team)
     })
     teamBtn.addEventListener("click", () => {
       showTeamDetails(team)
@@ -689,7 +711,7 @@ function login(){
     })  
   }
 
-  function signPlayer() {
+  function signPlayer(team) {
     playerDetail.innerHTML = ""
     teamDiv.innerHTML = ""
     cardDeck.innerHTML = ""
@@ -710,18 +732,13 @@ function login(){
               </div>
 
               <div class="form-label-group">
-                <input type="text" name="player_picture" class="form-control" required autofocus>
+                <input type="text" name="player_picture" class="form-control">
                 <label for="player_picture">Player Picture</label>
               </div>
 
               <div class="form-label-group">
                 <input type="text" name="position" class="form-control" required>
                 <label for="position">Player Position</label>
-              </div>
-              
-              <div class="form-label-group"> 
-                <select id="selectList" class="form-control">
-                </select>
               </div>
 
               <div class="form-label-group">
@@ -750,7 +767,7 @@ function login(){
               </div>
 
               <div class="form-label-group">
-                <input type="text" name="country_picture" class="form-control" required autofocus>
+                <input type="text" name="country_picture" class="form-control">
                 <label for="country_picture">Flag Picture</label>
               </div>
 
@@ -770,15 +787,15 @@ function login(){
   </div>
     `
     PopulateCoachDropDownList()
-    PopulateTeamDropDownList()
     let form = document.getElementById("newPlayer")
     form.addEventListener("submit", () => {
         event.preventDefault()
-        createNewPlayer(event)
+        createNewPlayer(team, event)
     })
   }
 
-  function createNewPlayer(event) {
+  function createNewPlayer(team, event) {
+    debugger
       fetch("http://localhost:3000/api/v1/players", {
           method: "POST", 
           headers: {
@@ -789,14 +806,14 @@ function login(){
             name: event.target[0].value,
             player_picture: event.target[1].value,
             position: event.target[2].value,
-            team_id: event.target[3].value,
-            user_id: event.target[4].value,
-            number: event.target[5].value,
-            salary: event.target[6].value,
-            playing_time: event.target[7].value,
-            nationality: event.target[8].value,
-            country_picture: event.target[9].value,
-            age: event.target[10].value,
+            team_id: team.id,
+            user_id: event.target[3].value,
+            number: event.target[4].value,
+            salary: event.target[5].value,
+            playing_time: event.target[6].value,
+            nationality: event.target[7].value,
+            country_picture: event.target[8].value,
+            age: event.target[9].value,
           })
       })
       .then(resp => resp.json()) 
@@ -1323,6 +1340,83 @@ function login(){
         `
         tableBody.innerHTML = dataHTML
       }
+  }
+
+  function fetchMatches(team) {
+    fetch("http://localhost:3000/api/v1/games")
+    .then(resp => resp.json())
+    .then(games => {
+      let allGames = games.filter(game => game.location === team.stadium)
+      showTeamSched(allGames)
+    })
+  }
+
+  function showTeamSched(allGames) {
+    cardDeck.innerHTML = ""
+    cardDeck.innerHTML =`
+    <div class="row justify-content-md-center" id="gameCard">
+    
+    
+    </div>
+    `
+
+    const showGameCard = document.getElementById("gameCard")
+
+
+
+    allGames.forEach(game => {
+
+      let allGameCard = document.createElement("div")
+      allGameCard.className = "card-deck-workouts"
+      showGameCard.append(allGameCard)
+
+      let gameCard = document.createElement("div")
+      gameCard.className = "card-games"
+      allGameCard.append(gameCard)
+
+      let br = document.createElement("br")
+      gameCard.append(br)
+
+      let cardTitle = document.createElement("h4")
+      cardTitle.className = "games-content-h4"
+      cardTitle.innerText = game.location
+      gameCard.append(cardTitle)
+      
+      let gameStartTime = document.createElement("p")
+      gameStartTime.className = "games-content-p"
+      var startTime = new Date(`${game.start_time}`)
+      var gameDate = startTime.toLocaleString()
+      gameStartTime.innerHTML = gameDate
+      gameCard.append(gameStartTime)
+
+      let teams = game["teams"]
+      teams.forEach(team => {
+
+        cardText = document.createElement("h4")
+        cardText.className = "card-text"
+        gameCard.append(cardText)
+
+        let teamNames = document.createElement("h6")
+        teamNames.className = "games-content-h6" 
+        teamNames.innerText = `${team.name}`
+        gameCard.append(teamNames)
+
+        let br = document.createElement("br")
+        gameCard.append(br)
+      })
+
+    })
+
+    // let homeTeamGoals = document.createElement('h4')
+    // homeTeamGoals.innerText = allGames.home_team_goals
+
+    // let awayTeamGoals = document.createElement('h4') 
+    // awayTeamGoals.innerText = allGames.away_team_goals
+
+    // cardText.innerText = `${homeTeamGoals} : ${awayTeamGoals}`
+
+
+
   }
 
 
