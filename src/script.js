@@ -441,8 +441,8 @@ function login(){
                     <div class="team-div">
                         <div class="team-picture">
                             <div class="row">
-                                <div class="stadium-photo">
-                                    <img src="${team.stadium_picture}" class="rounded img-fluid" alt="img">
+                                <div class="stadiumPhoto">
+                                    <img src="${team.stadium_picture}" class="rounded img-fluid" alt="user-profile">
                                 </div>
                             </div>
                         </div>

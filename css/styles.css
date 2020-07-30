@@ -112,6 +112,11 @@ body{
   color: white;
 }
 
+
+
+
+
+
 .workout-content-p {
   text-align: center; 
   font-size: 15px;
@@ -281,8 +286,8 @@ body{
     font-size: 25px; 
     text-align: center; 
     margin: 0;
-    float: none;
-    margin-bottom: 10px;
+    float: none; 
+    margin-bottom: 10px; 
 }
 
 .card-content-player p {
@@ -290,8 +295,8 @@ body{
     text-align: center; 
     padding: 0 20px 5px 20px; 
     margin: 0 auto; 
-    float: none; 
-    margin-bottom: 10px; 
+    float: none;
+    margin-bottom: 10px;
 }
 
 .buttons-player {
@@ -494,8 +499,8 @@ body{
 
   .card-workout {
     margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
+    margin-bottom: 10px !important;
+    margin-left: 20px !important;
     border-radius: 7px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     width: 400px;
@@ -505,8 +510,8 @@ body{
 
   .card-games {
     margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
+    margin-bottom: 10px !important;
+    margin-left: 20px !important;
     border-radius: 7px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     width: 400px;
