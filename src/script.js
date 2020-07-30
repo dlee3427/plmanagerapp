@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  login()
+  homePage()
 })
   
 let divForm = document.getElementById("formDiv")
@@ -20,6 +20,39 @@ teamDiv.class = "container"
 
 const cardDeck = document.createElement("div")
 cardDeck.className = "card-deck"
+
+
+function homePage() {
+  divForm.innerHTML = 
+  `
+  <section class="content-section video-section">
+  <div class="pattern-overlay">
+    <div class="full-screen-video-wrap"> 
+      <video autoplay muted loop id="myVideo"> 
+        <source src="prem.mp4" type="video/mp4">
+      </video>
+    </div> 
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="premierLeagueLogo">
+          </div>
+          <h1 class="premLeague">Welcome to the Premier League</h1><br><br>
+          <button id="loginBtn" class="btn-xl btn-primary">Get Started</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+  `
+  const gotologin = document.getElementById("loginBtn")
+  gotologin.addEventListener("click", () => {
+    login()
+  })
+
+}
+
+
 
 function PopulateTeamDropDownList() {
    
@@ -118,6 +151,90 @@ function PopulateTeamDropDownList() {
               }  
             )}
 
+function showUser(user) {
+
+  divForm.innerHTML = `
+  <div class="full-screen-video-wrap"> 
+    <video autoplay muted loop id="myVideo"> 
+        <source src="prem.mp4" type="video/mp4">
+    </video>
+  </div> 
+  <div class="row justify-content-md-center" id="playerCard">
+    <div class="col-md-10" position:absolute; left:0; right:0;>
+        <div class="card m-b-30">
+            <div class="card-header bg-white">
+                <h5 class="card-title text-black mb-0">Your Profile</h5>
+            </div>
+            <div class="card-body-user-profile">
+                <div class="xp-social-profile">
+                    <div class="xp-social-profile-img">
+                        <div class="row">
+                            <div class="playerPicture">
+                                <img src="${user.country_picture}" class="rounded img-fluid" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-social-profile-top">
+                        <div class="row">
+                            <div class="col">
+                                <div class="xp-social-profile-star py-3">
+                                    <i class="mdi mdi-star font-24"></i>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-avatar text-center">
+                                    <img src="${user.user_picture}" alt="user-profile" class="rounded-circle img-fluid">
+                                    <span class="xp-social-profile-live"></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="xp-social-profile-menu text-right py-3">
+                                    <i class="mdi mdi-dots-horizontal font-24"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-social-profile-middle text-center">
+                        <div class="row">
+                            <div class="col">
+                                <div class="xp-social-profile-title">
+                                    <h1 class="my-1 text-black">${user.name}</h5>
+                                </div><br>
+                                <div class="xp-social-profile-subtitle">
+                                    <h5 class="my-1 text-black">${user.email}</p>
+                                </div>
+                                <div class="xp-social-profile-subtitle">
+                                    <h5 class="my-1 text-black">Your Team: ${user.team.name}</p>
+                                    <h5 class="my-1 text-black">Your Salary: ${user.salary}</p>
+                                    <h5 class="my-1 text-black">Your Nationality: ${user.nationality}</p>
+                                </div><br>
+                                <div class="xp-social-profile-subtitle">
+                                  <button class="btn btn-light" id="getTeam">Go to Team Information</button>
+                                  <button class="btn btn-light" id="logOut">Log Out</button><br>
+                                </div><br><br>
+                            </div>
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+          </div>
+      </div> 
+</div>
+  `
+
+  const getTeam = document.getElementById("getTeam")
+  const logOut = document.getElementById("logOut")
+
+  getTeam.addEventListener("click", () => [
+    getindividualTeam(user)
+  ])
+  logOut.addEventListener("click", () => {
+    login()
+  })
+
+
+}
+
 function PopulateWorkoutList() {
 
   let selectList = document.getElementById("getWorkouts");
@@ -164,13 +281,13 @@ function register() {
         <div class="header-content"> 
         <div class="container">
             <div class="row">
-              <div class="col-lg-10 col-xl-9 mx-auto">
+              <div class="col-lg-10 col-xl-6 mx-auto">
                 <div class="card card-signin flex-row my-5">
                   <div class="card-img-left d-none d-md-flex">
                     <!-- Background image for card set in CSS! -->
                   </div>
                   <div class="card-body">
-                    <h5 class="card-title text-center">Register</h5>
+                    <h5 class="card-title-register text-center">Register</h5>
                     <form class="form-signin" id="registerForm">
                       <div class="form-label-group">
                         <input type="text" id="name" class="form-control" placeholder="Name" required autofocus>
@@ -197,7 +314,7 @@ function register() {
                         <label for="inputConfirmPassword">Confirm password</label>
                       </div>
 
-                      <input type="submit" value="Register">
+                      <input type="submit" class="btn btn-primary" value="Register">
         
                     </form>
                   </div>
@@ -228,7 +345,7 @@ function login(){
         <div class="header-overlay">
         </div> 
         <div class="header-content"> 
-          <h1>Login</h1>
+          <h1>Login</h1><br>
           <form method="post" id="loginForm">
             <div class="form-group">
               <label for="email">Email</label>
@@ -241,13 +358,15 @@ function login(){
             </div>
 
             <div class="form-group m-0">
-              <input type="submit" value="Log-In">
+              <input type="submit" class="btn btn-primary" value="Log-In">
             <div>
           
             <div class="mt-4 text-center">
-            Don't Have an Account?<button type="button" class="btn">Register</button>
+            Don't Have an Account?<br><br>
+            <button type="button" class="btn btn-danger">Register</button>
             <div>
           </form>
+
         </div>
       </header> 
       `
@@ -260,7 +379,7 @@ function login(){
         .then(users => {
          if (users.find(user => user.email === form.email.value)){
             let currentUser = users.find(user => user.email === form.email.value)
-            getindividualTeam(currentUser)
+            showUser(currentUser)
         }
         else (divForm.innerHTML += "<p> Please Sign in Again! </p>")
       })
@@ -284,8 +403,11 @@ function login(){
           })
       })
       .then(resp => resp.json())
-      .then(user => getindividualTeam(user))
+      .then(user => showUser(user))
   }
+
+
+  
 
   function getindividualTeam(user) {
     fetch("http://localhost:3000/api/v1/teams/"+user.team.id)
@@ -305,6 +427,7 @@ function login(){
     var playerSalary = players.map(player => player.salary).reduce((acc, salary) => salary + acc)
     var rosterTotal = players.length
     teamDiv.innerHTML = `
+    
     <div class="row justify-content-md-center">
         <div class="col-md-10" position:absolute; left:0; right:0;>
             <div class="card m-b-30">
@@ -587,12 +710,12 @@ function login(){
               </div>
 
               <div class="form-label-group">
-                <input type="text" id="player_picture" class="form-control" placeholder="Enter Image URL" required>
-                <label for="player_picture" >Player Picture</label>
+                <input type="text" name="player_picture" class="form-control" required autofocus>
+                <label for="player_picture">Player Picture</label>
               </div>
 
               <div class="form-label-group">
-                <input type="text" id="position" class="form-control" required>
+                <input type="text" name="position" class="form-control" required>
                 <label for="position">Player Position</label>
               </div>
               
@@ -607,40 +730,38 @@ function login(){
               </div>
 
               <div class="form-label-group">
+                <input type="integer" name="playerNumber" class="form-control" required autofocus>
                 <label for="playerNumber">Player Number</label>
-                <input type="integer" id="playerNumber" class="form-control" required autofocus>
               </div>
 
               <div class="form-label-group">
+                <input type="float" name="playerSalary" class="form-control" required autofocus>
                 <label for="playerSalary">Player Salary</label>
-                <input type="float" id="playerSalary" class="form-control" required autofocus>
               </div>
 
               <div class="form-label-group">
+                <input type="integer" name="playingTime" class="form-control" required autofocus>
                 <label for="playingTime">Playing Time</label>
-                <input type="integer" id="playingTime" class="form-control" required autofocus>
               </div>
 
               <div class="form-label-group">
+                <input type="text" name="nationality" class="form-control" required autofocus>
                 <label for="nationality">Nationality</label>
-                <input type="text" id="nationality" class="form-control" required autofocus>
               </div>
 
               <div class="form-label-group">
+                <input type="text" name="country_picture" class="form-control" required autofocus>
                 <label for="country_picture">Flag Picture</label>
-                <input type="text" id="country_picture" class="form-control" required autofocus>
               </div>
 
               <div class="form-label-group">
-                <label for="age">Age</label>
-                <input type="integer" id="age" class="form-control" required autofocus>
+              <input type="integer" name="age" class="form-control" required autofocus>
+                <label for="age">Age</label>             
               </div>
 
               <hr class="my-4">
 
-              <input type="submit" value="Submit">
-
-
+              <input class="btn btn-primary" type="submit" value="Submit">
             </form>
           </div>
         </div>
@@ -804,7 +925,12 @@ function login(){
 
     `
     const playerCard = document.getElementById("playerCard")
-    let char = player["workouts"]
+    
+    if (player["workouts"] === undefined) {
+      getindividualTeam(player)
+    } else {
+      let char = player["workouts"]
+    
     char.forEach(workout => {
 
       var a = new Date(`${workout.start_time}`)
@@ -912,6 +1038,7 @@ function login(){
       fetchPlayerTeam(player)
     })
   }
+}
 
   function fetchPlayerTeam(player) {
     return fetch("http://localhost:3000/api/v1/teams/"+player.team.id)
