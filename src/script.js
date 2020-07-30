@@ -43,7 +43,7 @@ function homePage() {
           <h1 class="premLeague">Welcome to the</h1>
           <h1 class="premLeagueSecond">Premier League</h1>
           <br><br>
-          <button id="loginBtn" class="btn-xl btn-light">Get Started</button>
+          <button id="loginBtn" style="background-color: #e90052; font-color:white;" class="btn-xl btn-light">Get Started</button>
       </div>
       </div>
     </div>
