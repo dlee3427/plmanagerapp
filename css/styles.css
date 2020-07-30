@@ -112,11 +112,6 @@ body{
   color: white;
 }
 
-
-
-
-
-
 .workout-content-p {
   text-align: center; 
   font-size: 15px;
@@ -286,17 +281,17 @@ body{
     font-size: 25px; 
     text-align: center; 
     margin: 0;
-    float: none; /* Added */
-    margin-bottom: 10px; /* Added */
+    float: none;
+    margin-bottom: 10px;
 }
 
 .card-content-player p {
     font-size: 16px; 
     text-align: center; 
     padding: 0 20px 5px 20px; 
-    margin: 0 auto; /* Added */
-    float: none; /* Added */
-    margin-bottom: 10px; /* Added */
+    margin: 0 auto; 
+    float: none; 
+    margin-bottom: 10px; 
 }
 
 .buttons-player {
@@ -304,9 +299,9 @@ body{
     padding-top: 5px;
     padding-bottom: 30px;
     padding: 0 14px;
-    margin: 0 auto; /* Added */
-    float: none; /* Added */
-    margin-bottom: 10px; /* Added */
+    margin: 0 auto; 
+    float: none;
+    margin-bottom: 10px; 
 }
 
 :root {
@@ -335,7 +330,6 @@ body{
 
   .card-signin .card-img-left {
     width: 45%;
-    /* Link to your background image using in the property below! */
     background: scroll center url('https://yt3.ggpht.com/a/AATXAJznyYl94RkgGa-dr-rsJAAgufjqxY-uLa-21pxy=s900-c-k-c0xffffffff-no-rj-mo');
     background-size: cover;
   }
@@ -500,8 +494,8 @@ body{
 
   .card-workout {
     margin-top: 10px;
-    margin-bottom: 10px !important;
-    margin-left: 20px !important;
+    margin-bottom: 10px;
+    margin-left: 20px;
     border-radius: 7px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     width: 400px;
@@ -511,8 +505,8 @@ body{
 
   .card-games {
     margin-top: 10px;
-    margin-bottom: 10px !important;
-    margin-left: 20px !important;
+    margin-bottom: 10px;
+    margin-left: 20px;
     border-radius: 7px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     width: 400px;
