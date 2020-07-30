@@ -40,7 +40,9 @@ function homePage() {
         <div class="col-lg-12">
           <div class="premierLeagueLogo">
           </div>
-          <h1 class="premLeague">Welcome to the Premier League</h1><br><br>
+          <h1 class="premLeague">Welcome to the</h1>
+          <h1 class="premLeagueSecond">Premier League</h1>
+          <br><br>
           <button id="loginBtn" class="btn-xl btn-primary">Get Started</button>
       </div>
       </div>

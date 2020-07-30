@@ -39,6 +39,11 @@ body{
   font-size: 150px;
 }
 
+.premLeagueSecond {
+  font-size: 150px;
+  color: white;
+}
+
 .btn-xl {
   padding: 10px 20px;
   font-size: 20px;
