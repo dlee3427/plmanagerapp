@@ -44,7 +44,7 @@ function homePage() {
           <h1 class="premLeagueSecond">Premier League</h1>
           <br><br>
           <button id="loginBtn" style="background-color: #e90052; font-color:white;" class="btn-xl btn-light">Get Started</button>
-      </div>
+        </div>
       </div>
     </div>
   </div>
@@ -450,7 +450,6 @@ function login(){
                             <div class="row">
                                 <div class="col">
                                     <div class="py-3">
-                                        <i class="mdi mdi-star font-24"></i>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -459,7 +458,7 @@ function login(){
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="text-right py-3">
+                                    <div class="py-3">
                                     </div>
                                 </div>
                             </div>
