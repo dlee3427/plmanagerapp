@@ -170,51 +170,49 @@ function showUser(user) {
             <div class="card-header bg-white">
                 <h5 class="card-title text-black mb-0">Your Profile</h5>
             </div>
-            <div class="card-body-user-profile">
-                <div class="xp-social-profile">
-                    <div class="xp-social-profile-img">
+            <div class="user-body text-center">
+                <div class="user-information">
+                    <div class="user-picture-div">
                         <div class="row">
                             <div class="playerPicture">
                                 <img src="${user.country_picture}" class="rounded img-fluid" alt="img">
                             </div>
                         </div>
                     </div>
-                    <div class="xp-social-profile-top">
+                    <div class="user-body">
                         <div class="row">
                             <div class="col">
-                                <div class="xp-social-profile-star py-3">
-                                    <i class="mdi mdi-star font-24"></i>
+                                <div class="py-3">
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-avatar text-center">
+                                <div class="text-center">
                                     <img src="${user.user_picture}" alt="user-profile" class="rounded-circle img-fluid">
                                     <span class="xp-social-profile-live"></span>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-menu text-right py-3">
-                                    <i class="mdi mdi-dots-horizontal font-24"></i>
+                                <div class="py-3">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="xp-social-profile-middle text-center">
+                    <div class="user-body">
                         <div class="row">
                             <div class="col">
-                                <div class="xp-social-profile-title">
+                                <div class="user-name">
                                     <h1 class="my-1 text-black">${user.name}</h5>
                                 </div><br>
-                                <div class="xp-social-profile-subtitle">
+                                <div class="user-email">
                                     <h5 class="my-1 text-black">${user.email}</p>
                                 </div>
-                                <div class="xp-social-profile-subtitle">
+                                <div class="user-information">
                                     <h5 class="my-1 text-black">Your Team: ${user.team.name}</p>
                                     <h5 class="my-1 text-black">Your Salary: £${user.salary}</p>
                                     <h5 class="my-1 text-black">Your Nationality: ${user.nationality}</p>
                                     <h5 class="my-1 text-black">Number of Players Managed: ${user.team.players.length}</p>
                                 </div><br>
-                                <div class="xp-social-profile-subtitle">
+                                <div class="user-profile-buttons">
                                   <button class="btn btn-light" id="getTeam">Go to Team Information</button>
                                   <button class="btn btn-danger" id="logOut">Log Out</button><br>
                                 </div><br><br>
@@ -292,7 +290,6 @@ function register() {
               <div class="col-lg-10 col-xl-6 mx-auto">
                 <div class="card card-signin flex-row my-5">
                   <div class="card-img-left d-none d-md-flex">
-                    <!-- Background image for card set in CSS! -->
                   </div>
                   <div class="card-body">
                     <h5 class="card-title-register text-center">Register</h5>
@@ -445,81 +442,80 @@ function login(){
                     <h5 class="card-title text-black mb-0">Team Profile</h5>
                 </div>
                 <div class="card-body">
-                    <div class="xp-social-profile">
-                        <div class="xp-social-profile-img">
+                    <div class="team-div">
+                        <div class="team-picture">
                             <div class="row">
                                 <div class="stadiumPhoto">
                                     <img src="${team.stadium_picture}" class="rounded img-fluid" alt="img">
                                 </div>
                             </div>
                         </div>
-                        <div class="xp-social-profile-top">
+                        <div class="team-information">
                             <div class="row">
                                 <div class="col">
-                                    <div class="xp-social-profile-star py-3">
+                                    <div class="py-3">
                                         <i class="mdi mdi-star font-24"></i>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="xp-social-profile-avatar text-center">
+                                    <div class="text-center">
                                         <img src="${team.logo}" alt="user-profile" class="rounded-circle img-fluid">
                                         <span class="xp-social-profile-live"></span>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="xp-social-profile-menu text-right py-3">
+                                    <div class="text-right py-3">
                                         <i class="mdi mdi-dots-horizontal font-24"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="xp-social-profile-middle text-center">
+                        <div class="text-center">
                             <div class="row">
                                 <div class="col">
-                                    <div class="xp-social-profile-title">
+                                    <div class="team-name">
                                         <h2 class="my-1 text-black">${team.name}</h5>
                                     </div>
-                                    <div class="xp-social-profile-subtitle">
+                                    <div class="team-stadium">
                                         <p class="mb-3 text-muted">${team.stadium}</p>
                                     </div>
-                                    <div class="xp-social-profile-subtitle">
-                                    <p class="mb-3 text-muted">Team Budget: £${team.team_budget - playerSalary}</p>
+                                    <div class="team-budger">
+                                      s="mb-3 text-muted">Team Budget: £${team.team_budget - playerSalary}</p>
                                     </div>
 
-                                    <div class="xp-social-profile-desc">
-                                    <p class="text-muted">Primary Kit Color: ${team.primary_color}</p>
-                                    <p class="text-muted">Secondary Kit Color: ${team.secondary_color}</p>
+                                    <div class="team-colors">
+                                      <p class="text-muted">Primary Kit Color: ${team.primary_color}</p>
+                                      <p class="text-muted">Secondary Kit Color: ${team.secondary_color}</p>
                                     </div>
-
                                 </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="xp-social-profile-bottom text-center">
+                        <div class="team-information text-center">
                             <div class="row">
                                 <div class="col">
-                                    <div class="xp-social-profile-media pt-3">
+                                    <div class="pt-3">
                                         <h5 class="text-black my-1" id="teamWins">${team.wins}</h5>
                                         <p class="mb-0 text-muted">Wins</p>
                                         <button id="incrementWins" class="btn btn-light">+</button>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="xp-social-profile-followers pt-3">
+                                    <div class="pt-3">
                                         <h5 class="text-black my-1" id="teamDraws">${team.draws}</h5>
                                         <p class="mb-0 text-muted">Draws</p>
                                         <button id="incrementDraws" class="btn btn-light">+</button>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="xp-social-profile-following pt-3">
+                                    <div class="pt-3">
                                         <h5 class="text-black my-1" id="teamLosses">${team.losses}</h5>
                                         <p class="mb-0 text-muted">Losses</p>
                                         <button id="incrementLosses" class="btn btn-light">+</button>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="xp-social-profile-following pt-3">
+                                    <div class="pt-3">
                                         <h5 class="text-black my-1" id="teamPoints">${team.wins * 3 + team.draws * 1}</h5>
                                         <p class="mb-0 text-muted">Points</p>
                                     </div>
@@ -850,44 +846,37 @@ function login(){
                 <h5 class="card-title text-black mb-0">Player Profile</h5>
             </div>
             <div class="card-body">
-                <div class="xp-social-profile">
-                    <div class="xp-social-profile-img">
+                <div class="player-body">
+                    <div class="player-picture-div">
                         <div class="row">
                             <div class="playerPicture">
                                 <img src="${player.country_picture}" class="rounded img-fluid" alt="img">
                             </div>
                         </div>
                     </div>
-                    <div class="xp-social-profile-top">
+                    <div class="player-picture">
                         <div class="row">
                             <div class="col">
-                                <div class="xp-social-profile-star py-3">
-                                    <i class="mdi mdi-star font-24"></i>
-                                </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-avatar text-center">
+                                <div class="text-center">
                                     <img src="${player.player_picture}" alt="user-profile" class="rounded-circle img-fluid">
-                                    <span class="xp-social-profile-live"></span>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-menu text-right py-3">
-                                    <i class="mdi mdi-dots-horizontal font-24"></i>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="xp-social-profile-middle text-center">
+                    <div class="text-center">
                         <div class="row">
                             <div class="col">
-                                <div class="xp-social-profile-title">
+                                <div class="player-name">
                                     <h1 class="my-1 text-black">${player.name} #${player.number}</h5>
                                 </div><br>
-                                <div class="xp-social-profile-subtitle">
+                                <div class="player-position">
                                     <h3 class="my-1 text-black">${player.position}</p>
                                 </div>
-                                <div class="xp-social-profile-subtitle">
+                                <div class="player-salary">
                                   <p class="mb-3 text-muted">Salary: £${player.salary}</p>
                                   <p class="mb-3 text-muted">Nationality: ${player.nationality}</p>
                                   <p class="mb-3 text-muted">Age: ${player.age}</p>
@@ -896,34 +885,34 @@ function login(){
                             </div>
                         </div>
                     </div>
-                    <div class="xp-social-profile-bottom text-center">
+                    <div class="text-center">
                         <div class="row">
                             <div class="col">
-                                <div class="xp-social-profile-media pt-3">
+                                <div class="player-stats">
                                     <h5 class="text-black my-1">${player.appearances}</h5>
                                     <p class="mb-0 text-muted">Appearances</p>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-followers pt-3">
+                                <div class="pt-3">
                                     <h5 class="text-black my-1">${player.goals}</h5>
                                     <p class="mb-0 text-muted">Goals</p>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-following pt-3">
+                                <div class="pt-3">
                                     <h5 class="text-black my-1">${player.assists}</h5>
                                     <p class="mb-0 text-muted">Assists</p>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-following pt-3">
+                                <div class="pt-3">
                                     <h5 class="text-black my-1">${player.tackles}</h5>
                                     <p class="mb-0 text-muted">Tackles</p>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="xp-social-profile-following pt-3">
+                                <div class="pt-3">
                                     <h5 class="text-black my-1">${player.playing_time}</h5>
                                     <p class="mb-0 text-muted">Playing Time</p>
                                 </div>
@@ -941,7 +930,6 @@ function login(){
                         </div> 
                       </div>
                     </div>
-
     `
     const playerCard = document.getElementById("playerCard")
     
@@ -1224,19 +1212,19 @@ function login(){
                 <h5 class="card-title text-black mb-0">Workout Detail</h5>
             </div>
             <div class="card-body-workout" id="workoutCard">
-                <div class="xp-social-profile">
-                    <div class="xp-social-profile-middle text-center">
+                <div class="workout-information">
+                    <div class="text-center">
                         <div class="row">
                             <div class="col">
-                                <div class="xp-social-profile-title">
+                                <div class="workout-name">
                                     <h4 class="my-1 text-black">${workout.name}</h4>
                                 </div><br>
-                                <div class="xp-social-profile-title">
+                                <div class="workout-dates">
                                     <p class="my-1 text-black">Workout Date: ${date}</p>
                                     <p class="my-1 text-black">Workout Start Time: ${startDate}</p>
                                     <p class="my-1 text-black">Workout End Time: ${endDate}</h4><br>
                                 </div><br>
-                                <div class="xp-social-profile-subtitle" id="showExercises">
+                                <div class="show-exercises" id="showExercises">
                                   <h4>Exercises</h4><br>
                                 </div>
                             </div>
@@ -1363,9 +1351,6 @@ function login(){
     `
 
     const showGameCard = document.getElementById("gameCard")
-
-
-
     allGames.forEach(game => {
 
       let allGameCard = document.createElement("div")
