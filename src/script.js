@@ -188,7 +188,6 @@ function showUser(user) {
                             <div class="col">
                                 <div class="text-center">
                                     <img src="${user.user_picture}" alt="user-profile" class="rounded-circle img-fluid">
-                                    <span class="xp-social-profile-live"></span>
                                 </div>
                             </div>
                             <div class="col">
@@ -385,8 +384,8 @@ function login(){
         .then(res => res.json())
         .then(users => {
          if (users.find(user => user.email === form.email.value)){
-            let currentUser = users.find(user => user.email === form.email.value)
-            showUser(currentUser)
+            let loggedinUser = users.find(user => user.email === form.email.value)
+            showUser(loggedinUser)
         }
         else (divForm.innerHTML += "<p> Please Sign in Again! </p>")
       })
@@ -412,9 +411,6 @@ function login(){
       .then(resp => resp.json())
       .then(user => showUser(user))
   }
-
-
-  
 
   function getindividualTeam(user) {
     fetch("http://localhost:3000/api/v1/teams/"+user.team.id)
@@ -445,7 +441,7 @@ function login(){
                     <div class="team-div">
                         <div class="team-picture">
                             <div class="row">
-                                <div class="stadiumPhoto">
+                                <div class="stadium-photo">
                                     <img src="${team.stadium_picture}" class="rounded img-fluid" alt="img">
                                 </div>
                             </div>
@@ -460,12 +456,10 @@ function login(){
                                 <div class="col">
                                     <div class="text-center">
                                         <img src="${team.logo}" alt="user-profile" class="rounded-circle img-fluid">
-                                        <span class="xp-social-profile-live"></span>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="text-right py-3">
-                                        <i class="mdi mdi-dots-horizontal font-24"></i>
                                     </div>
                                 </div>
                             </div>
@@ -479,8 +473,8 @@ function login(){
                                     <div class="team-stadium">
                                         <p class="mb-3 text-muted">${team.stadium}</p>
                                     </div>
-                                    <div class="team-budger">
-                                      s="mb-3 text-muted">Team Budget: £${team.team_budget - playerSalary}</p>
+                                    <div class="team-budget">
+                                        <p class="mb-3 text-muted">Team Budget: £${team.team_budget - playerSalary}</p>
                                     </div>
 
                                     <div class="team-colors">
@@ -530,7 +524,6 @@ function login(){
                                   <button class="btn btn-light" id="premStandings">Premier League Standings</button>
                                   <button class="btn btn-light" id="checkSched">Team Schedule</button><br><br>
                                   <button class="btn btn-danger" id="logOutBtn">Log Out</button> 
-
                                 </div>
                               <div/>
                             </div>
@@ -1345,11 +1338,8 @@ function login(){
     cardDeck.innerHTML = ""
     cardDeck.innerHTML =`
     <div class="row justify-content-md-center" id="gameCard">
-    
-    
     </div>
     `
-
     const showGameCard = document.getElementById("gameCard")
     allGames.forEach(game => {
 
