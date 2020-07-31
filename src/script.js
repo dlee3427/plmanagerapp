@@ -383,17 +383,15 @@ function login(){
     fetch("http://localhost:3000/api/v1/users")
         .then(res => res.json())
         .then(users => {
-         if (users.find(user => user.email === form.email.value)){
-            let loggedinUser = users.find(user => user.email === form.email.value)
-            showUser(loggedinUser)
-        }
-        else (divForm.innerHTML += "<p> Please Sign in Again! </p>")
+          let loggedinUser = users.find(user => user.email === form.email.value)
+          showUser(loggedinUser)
+        })
       })
-    })
     registerBtn.addEventListener("click", () => {
       register()
-    })
+      })
   }
+  
   function createNewUser(event) {
       fetch("http://localhost:3000/api/v1/users", {
           method: "POST", 
